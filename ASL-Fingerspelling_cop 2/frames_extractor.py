@@ -29,3 +29,9 @@ def frameExtractor(path_to_video_files, path_to_frames):
                     count += 1
         except:
             continue
+
+if __name__ == "__main__":
+    alphabets = list(range(26))
+    path_to_video_files = os.path.join(os.path.dirname(os.path.abspath(__file__)),'alphabet_videos')
+    path_to_frames = os.path.join(os.path.dirname(os.path.abspath(__file__)),'alphabet_video_frames')
+    frameExtractor(path_to_video_files, path_to_frames)

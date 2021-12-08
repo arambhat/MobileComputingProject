@@ -2,81 +2,64 @@ import cv2
 import os
 import time
 import threading
+import mediapipe
 from convert_to_csv import convert_to_csv
 from frames_extractor import frameExtractor
 from prediction import predict
-from hand_shape_extraction_from_frame import extract_hand_frame
+from hand_frame_cropping import crop_hand_frame
 from Naked.toolshed.shell import execute_js, muterun_js
 
 
-BASE_PATH=os.path.dirname(os.path.abspath(__file__))
-
 # Path to the directory containing Video Files
-path_to_video_files = os.path.join(BASE_PATH,'alphabet_videos')
 
-hand_frames_folder =  os.path.join(BASE_PATH,'alphabet_hand_frames')
-path_to_word_videos = os.path.join(BASE_PATH, 'word_videos')
-path_to_word_frames = os.path.join(BASE_PATH, 'word_frames')
-path_to_word_hand_frames = os.path.join(BASE_PATH, 'word_hand_frames')
+alphabet_videos_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'alphabet_videos')
+alphabet_frames_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'alphabet_frames')
+alphabet_hand_frames_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'alphabet_hand_frames')
 
-path_to_frames = os.path.join(BASE_PATH,'alphabet_video_frames')
-ALPHABET_ARRAY = [
-    'A','B','C','D','E','F','G','H','I','J',
-    'K', 'L', 'M', 'N','O','P','Q','R', 'V',
-    'W','X','Y','Z'
-]
+word_videos_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'word_videos')
+word_frames_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'word_frames')
+word_hand_frames_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'word_hand_frames')
 
 
 if __name__=='__main__':
-    print("Choose following options: \n1. Process Alphabet videos and predict \n2.Process word Videos and Predict \n3. Predict(if you have processed videos already)")
-    choice = input("Choose an option: ")
-    if choice == '1':
-        thread = threading.Thread(target=frameExtractor(path_to_video_files, path_to_frames))
+
+    # print("MENU: \n1. Process and predict ASL alphabets \n2.Process and predict ASL words \n3. Predict(if videos have been processed already)")
+    print("MENU: \n1. Process and predict ASL alphabets \n2.Process and predict ASL words")
+    option = input("Please select an option: ")
+
+    if option == '1':
+
+        frameExtractor(alphabet_videos_path, alphabet_frames_folder_path)
+        # nFiles = len([file for file in os.path.listdir()])
+        listOfVideos = [66]
+        for alphabet in listOfVideos:
+            frames_folder_path = os.path.join(alphabet_frames_folder_path, "{}/".format(chr(alphabet)))
+            # success = execute_js('posenet.js', frames_folder_path)
+            success = True
+            if success:
+                # convert_to_csv(frames_folder_path)
+                cropped_folder_path = os.path.join(alphabet_hand_frames_folder_path, "{}_cropped".format(chr(alphabet)))
+                crop_hand_frame(frames_folder_path, cropped_folder_path)
+
+        predict(alphabet_video_path = alphabet_videos_path, alphabet_frame_path= alphabet_hand_frames_folder_path)
+
+    elif option == '2':
+
+        thread = threading.Thread(target=frameExtractor(word_videos_path, word_frames_folder_path))
         thread.start()
         thread.join()
-        for alphabet in ALPHABET_ARRAY:
-            print("creating key points file for alphabet {}".format(alphabet))
-            frame_path = os.path.join(path_to_frames, "{}/".format(alphabet))
-            success = execute_js('posenet.js', frame_path)
+
+        video_files_names =  [file for file in os.listdir(word_videos_path) if file.endswith('.mp4')]
+        for file_name in video_files_names:
+            word_name = file_name.split('.')[0]
+            print("Key points file generation for word {}".format(file_name.split('.')[0]))
+            frames_folder_path = os.path.join(word_frames_folder_path, "{}/".format(word_name))
+            #success = execute_js('posenet.js', frames_folder_path)
+            success=True
             if success:
-                convert_to_csv(frame_path)
-                cropped_folder = os.path.join(hand_frames_folder, "{}_cropped".format(alphabet))
-                extract_hand_frame(frame_path, cropped_folder)
-        predict(
-           alphabet_video_path= path_to_video_files,
-           alphabet_frame_path= hand_frames_folder
-        )
+                convert_to_csv(frames_folder_path)
+                cropped_folder_path = os.path.join(word_hand_frames_folder_path, "{}_cropped".format(word_name))
+                crop_hand_frame(frames_folder_path, cropped_folder_path)
 
-    if choice == '2':
-        thread = threading.Thread(target=frameExtractor(path_to_word_videos, path_to_word_frames))
-        thread.start()
-        thread.join()
-        videoFileNames =  [file for file in os.listdir(path_to_word_videos) if file.endswith('.mp4')]
-
-        for fileName in videoFileNames:
-            word_name = fileName.split('.')[0]
-            print("creating key points file for word {}".format(fileName.split('.')[0]))
-            frame_path = os.path.join(path_to_word_frames, "{}/".format(word_name))
-            success = execute_js('posenet.js', frame_path)
-            if success:
-                convert_to_csv(frame_path)
-                cropped_folder = os.path.join(path_to_word_hand_frames, "{}_cropped".format(word_name))
-                extract_hand_frame(frame_path, cropped_folder)
-
-
-        predict(
-            word_video_path= path_to_word_videos,
-            word_frame_path=path_to_word_hand_frames,
-            pos_key_path=path_to_word_frames
-        )
-
-    if choice == '3':
-        predict(
-            alphabet_video_path=path_to_video_files,
-            alphabet_frame_path=hand_frames_folder,
-            word_video_path= path_to_word_videos,
-            word_frame_path=path_to_word_hand_frames,
-            pos_key_path=path_to_word_frames
-        )
-
+        predict(word_video_path= word_videos_path, word_frame_path=word_hand_frames_folder_path, pos_key_path=word_frames_folder_path)
 

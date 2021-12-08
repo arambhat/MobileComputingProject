@@ -65,11 +65,14 @@ def predict(
             right_arm = pos_key.rightWrist_y
             left_wrist = pos_key.leftWrist_x
             left_arm = pos_key.leftWrist_y
+            r_score = pos_key.rightWrist_score
+ 
             word = []
             till = 0
             start = 0
             for i in range(len(right_wrist)):
-                if ((i != len(right_wrist)-1)and ((abs(left_wrist[i+1]-left_wrist[i]) > 8.5) or (abs(left_arm[i+1]-left_arm[i]) > 8.5))):
+                if(r_score[i]<0.4):
+                #if ((i != len(right_wrist)-1)and ((abs(right_wrist[i+1]-right_wrist[i]) > 8.5) )):
                     till = i
                     test_data = os.path.join(word_frame_path, video_name_path)
                     pred = predict_words_from_frames(test_data, start,till)
@@ -79,6 +82,10 @@ def predict(
                     except:
                         prediction = ''
                     word.append(prediction)
+                while(r_score[i]<0.6):
+                    i=i+1
+                    start=i
+
                 if(i == len(right_wrist)-1):
                     start = till
                     till = i
