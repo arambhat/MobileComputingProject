@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B4AEC6"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="159dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:background="#E3D4D4"
+        android:onClick="navToSymptomActivity"
+        android:text="Log Symptoms"
+        app:layout_constraintBottom_toTopOf="@+id/video_preview"
+        app:layout_constraintEnd_toStartOf="@+id/upload"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.622" />
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:onClick="uploadSigns"
+        android:text="Upload Signs"
+        app:backgroundTint="#4CAFAC"
+        app:layout_constraintBottom_toTopOf="@+id/video_preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.623" />
+
+    <Button
+        android:id="@+id/heartRateButton"
+        android:layout_width="195dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="336dp"
+        android:onClick="measureHeartRate"
+        android:text="Measure Heart Rate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/heartRateText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/heartRateText" />
+
+    <VideoView
+        android:id="@+id/video_preview"
+        android:layout_width="171dp"
+        android:layout_height="162dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.462" />
+
+    <Button
+        android:id="@+id/stopHRMeasuring"
+        android:layout_width="190dp"
+        android:layout_height="49dp"
+        android:onClick="stopHRMeasurement"
+        android:text="Stop Measurement"
+        android:visibility="invisible"
+        app:backgroundTint="#E53935"
+        app:layout_constraintBottom_toBottomOf="@+id/heartRateButton"
+        app:layout_constraintEnd_toEndOf="@+id/heartRateButton"
+        app:layout_constraintHorizontal_bias="0.973"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/heartRateText"
+        android:layout_width="191dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="260dp"
+        android:background="#878482"
+        android:text="Place your finger on camera before measuring"
+        app:layout_constraintBottom_toTopOf="@+id/heartRateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.56" />
+
+    <Button
+        android:id="@+id/stopRRMeasuring"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:onClick="stopRRMeasurement"
+        android:text="Stop Measurement"
+        android:visibility="invisible"
+        app:backgroundTint="#E53935"
+        app:layout_constraintBottom_toBottomOf="@+id/respiratoryRateButton"
+        app:layout_constraintEnd_toEndOf="@+id/respiratoryRateButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/respiratoryRateButton"
+        app:layout_constraintTop_toTopOf="@+id/respiratoryRateButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/respiratoryText"
+        android:layout_width="307dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="12dp"
+        android:background="#8E8787"
+        android:text="Place the phone on your chest before measuring"
+        app:layout_constraintBottom_toTopOf="@+id/respiratoryRateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.978" />
+
+    <Button
+        android:id="@+id/respiratoryRateButton"
+        android:layout_width="318dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:onClick="measureRespiratoryRate"
+        android:text="Measure Respiratory Rate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/respiratoryText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.789" />
+
+    <TextView
+        android:id="@+id/recordCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Records 0"
+        app:layout_constraintBottom_toTopOf="@+id/upload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.908"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

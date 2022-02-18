@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_list">
+
+    <fragment
+        android:id="@+id/navigation_list"
+        android:name="com.example.smarthomegesturetrainer.ui.List.ListViewFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_navigation_list_to_navigation_learn"
+            app:destination="@id/navigation_learn" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_learn"
+        android:name="com.example.smarthomegesturetrainer.ui.Learn.LearnViewFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_learn">
+        <action
+            android:id="@+id/action_navigation_learn_to_navigation_practice3"
+            app:destination="@id/navigation_practice" />
+        <argument
+            android:name="gesture"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_practice"
+        android:name="com.example.smarthomegesturetrainer.ui.Practice.PracticeViewFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_practice" >
+        <action
+            android:id="@+id/action_navigation_practice_to_navigation_list"
+            app:destination="@id/navigation_list" />
+        <argument
+            android:name="gesture"
+            app:argType="string" />
+    </fragment>
+</navigation>
